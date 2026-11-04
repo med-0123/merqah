@@ -1,0 +1,225 @@
+/* =====================================
+   Dashboard widgets, Tasks, Timer
+===================================== */
+
+.dash-subject {
+    margin-bottom: 16px;
+}
+
+.dash-subject-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.dash-subject-top span {
+    color: var(--secondary-text);
+    font-size: 11px;
+}
+
+.mini-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 4px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.mini-item:last-child {
+    border-bottom: none;
+}
+
+.mini-item > i {
+    color: var(--primary-color);
+}
+
+.mini-item strong {
+    display: block;
+    font-size: 12px;
+}
+
+.mini-item span {
+    color: var(--secondary-text);
+    font-size: 11px;
+}
+
+.mini-task {
+    cursor: pointer;
+}
+
+.mini-task input {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.chart-card {
+    grid-column: 1 / -1;
+}
+
+/* ---------- Tasks ---------- */
+
+.tasks-page,
+.timer-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.task-form {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 10px;
+}
+
+.task-form input,
+.task-form select,
+.timer-card select {
+    padding: 11px;
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+    min-width: 0;
+}
+
+.task-form input:focus,
+.task-form select:focus,
+.timer-card select:focus {
+    border-color: var(--primary-color);
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 8px;
+}
+
+.filter-tabs button,
+.timer-presets button {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: var(--card-color);
+    color: var(--secondary-text);
+    border: 1px solid var(--border-color);
+    font-size: 12px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.filter-tabs button.active,
+.timer-presets button.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.timer-presets button:disabled,
+.timer-card select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 6px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.tag-danger {
+    background: #fde8e8;
+    color: #c0504d;
+}
+
+body.dark-mode .tag-danger {
+    background: #4f2f2f;
+    color: #f0a3a0;
+}
+
+/* ---------- Timer ---------- */
+
+.timer-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 32px 21px;
+}
+
+.timer-display {
+    font-size: 76px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    letter-spacing: 3px;
+    direction: ltr;
+    line-height: 1;
+}
+
+.timer-track {
+    max-width: 420px;
+}
+
+.timer-presets,
+.timer-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.timer-card select {
+    min-width: 200px;
+}
+
+.timer-btn {
+    width: auto;
+    padding: 11px 17px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 768px) {
+    .task-form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .task-form input[name="title"] {
+        grid-column: 1 / -1;
+    }
+
+    .task-item {
+        flex-wrap: wrap;
+    }
+
+    .timer-display {
+        font-size: 56px;
+    }
+}

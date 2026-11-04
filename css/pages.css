@@ -1,0 +1,583 @@
+/* =====================================
+   Pages: schedule, calendar, exams, statistics,
+   notes, achievements, revisions, library, toast
+===================================== */
+
+.page-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.inline-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.inline-form input,
+.inline-form select,
+.inline-form textarea,
+.field {
+    padding: 11px;
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+    min-width: 0;
+}
+
+.inline-form input:focus,
+.inline-form select:focus,
+.inline-form textarea:focus,
+.field:focus {
+    border-color: var(--primary-color);
+}
+
+.inline-form .grow {
+    flex: 1 1 180px;
+}
+
+.icon-action {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--bg-color);
+    color: var(--secondary-text);
+    transition: 0.2s;
+    flex-shrink: 0;
+}
+
+.icon-action:hover {
+    color: var(--primary-color);
+    background: var(--primary-light);
+}
+
+.small-btn {
+    padding: 7px 12px;
+    border-radius: 8px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 11px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.small-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.small-btn.danger {
+    background: #fde8e8;
+    color: #c0504d;
+}
+
+body.dark-mode .small-btn.danger {
+    background: #4f2f2f;
+    color: #f0a3a0;
+}
+
+.row-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 6px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.row-item:last-child {
+    border-bottom: none;
+}
+
+.row-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.row-main strong {
+    display: block;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.row-main span {
+    color: var(--secondary-text);
+    font-size: 11px;
+}
+
+.row-actions {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+}
+
+.section-title {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+
+.badge {
+    padding: 4px 11px;
+    border-radius: 20px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.badge.warn {
+    background: var(--orange-bg);
+    color: #c97a2b;
+}
+
+.badge.danger {
+    background: #fde8e8;
+    color: #c0504d;
+}
+
+body.dark-mode .badge.danger {
+    background: #4f2f2f;
+    color: #f0a3a0;
+}
+
+/* ---------- Schedule ---------- */
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.day-column {
+    background: var(--card-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 12px;
+    min-height: 160px;
+}
+
+.day-column.today {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.day-column h4 {
+    font-size: 13px;
+    text-align: center;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.session-chip {
+    background: var(--primary-light);
+    border-radius: 9px;
+    padding: 8px 9px;
+    margin-bottom: 8px;
+    font-size: 11px;
+    position: relative;
+}
+
+.session-chip strong {
+    display: block;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.session-chip span {
+    color: var(--secondary-text);
+}
+
+.session-chip button {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background: none;
+    color: var(--secondary-text);
+    font-size: 11px;
+}
+
+.session-chip button:hover {
+    color: #c0504d;
+}
+
+.day-empty {
+    text-align: center;
+    color: var(--secondary-text);
+    font-size: 11px;
+    padding: 12px 0;
+}
+
+/* ---------- Calendar ---------- */
+
+.year-strip {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.year-strip button {
+    padding: 6px 12px;
+    border-radius: 16px;
+    background: var(--card-color);
+    border: 1px solid var(--border-color);
+    color: var(--secondary-text);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.year-strip button.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.cal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.cal-head h3 {
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.cal-dow {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--secondary-text);
+    padding: 6px 0;
+}
+
+.cal-cell {
+    min-height: 62px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-color);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    transition: 0.15s;
+}
+
+.cal-cell.blank {
+    background: transparent;
+    border-color: transparent;
+    cursor: default;
+}
+
+.cal-cell:not(.blank):hover {
+    border-color: var(--primary-color);
+}
+
+.cal-cell.today {
+    border-color: var(--primary-color);
+}
+
+.cal-cell.selected {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.dots {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.dot.event { background: #668b72; }
+.dot.exam { background: #e49a52; }
+.dot.task { background: #5486c2; }
+
+.cal-cell.selected .dot {
+    box-shadow: 0 0 0 1px white;
+}
+
+.legend {
+    display: flex;
+    gap: 14px;
+    font-size: 11px;
+    color: var(--secondary-text);
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+.legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ---------- Statistics ---------- */
+
+.stats-wide {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 18px;
+}
+
+.chart-box {
+    position: relative;
+    height: 260px;
+}
+
+/* ---------- Notes ---------- */
+
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.note-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.note-card h4 {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.note-card p {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--text-color);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    max-height: 160px;
+    overflow: hidden;
+}
+
+.note-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    gap: 8px;
+}
+
+.note-foot small {
+    color: var(--secondary-text);
+    font-size: 10px;
+}
+
+.note-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.note-editor input,
+.note-editor select,
+.note-editor textarea {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 9px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.note-editor textarea {
+    min-height: 180px;
+    resize: vertical;
+    line-height: 1.8;
+}
+
+.note-editor input:focus,
+.note-editor select:focus,
+.note-editor textarea:focus {
+    border-color: var(--primary-color);
+}
+
+/* ---------- Achievements ---------- */
+
+.ach-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.ach-card {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.ach-card.locked {
+    opacity: 0.6;
+}
+
+.ach-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background: var(--border-color);
+    color: var(--secondary-text);
+}
+
+.ach-card.done .ach-icon {
+    background: var(--orange-bg);
+    color: #e49a52;
+}
+
+.ach-card h4 {
+    font-size: 14px;
+}
+
+.ach-card p {
+    font-size: 11px;
+    color: var(--secondary-text);
+}
+
+.ach-card small {
+    font-size: 10px;
+    color: var(--secondary-text);
+}
+
+/* ---------- Library ---------- */
+
+.file-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--blue-bg);
+    color: #5486c2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.file-icon.link {
+    background: var(--green-bg);
+    color: #668b72;
+}
+
+.link-btn {
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* ---------- Toast ---------- */
+
+#toast-box {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 999;
+}
+
+.toast {
+    background: var(--primary-dark);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+    transition: opacity 0.4s;
+}
+
+body.dark-mode .toast {
+    background: var(--primary-light);
+    color: var(--text-color);
+}
+
+.toast.hide {
+    opacity: 0;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1100px) {
+    .schedule-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .notes-grid,
+    .ach-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .schedule-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stats-wide {
+        grid-template-columns: 1fr;
+    }
+
+    .cal-cell {
+        min-height: 48px;
+        padding: 4px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 520px) {
+    .schedule-grid,
+    .notes-grid,
+    .ach-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .row-item {
+        flex-wrap: wrap;
+    }
+}
