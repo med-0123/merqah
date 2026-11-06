@@ -76,7 +76,11 @@ function startTimer() {
     if (timerState.startedAt) return;
 
     timerState.startedAt = Date.now();
+
+    preventScreenSleep();
+
     timerState.intervalId = setInterval(timerTick, 1000);
+
     renderTimerPage(pagesContainer);
 }
 
@@ -85,14 +89,22 @@ function pauseTimer() {
 
     timerState.accumulated = timerElapsed();
     timerState.startedAt = null;
+
     stopTimerInterval();
+
+    allowScreenSleep();
+
     renderTimerPage(pagesContainer);
 }
 
 function resetTimer() {
     stopTimerInterval();
+
+    allowScreenSleep();
+
     timerState.accumulated = 0;
     timerState.startedAt = null;
+
     renderTimerPage(pagesContainer);
 }
 
@@ -245,3 +257,30 @@ document.addEventListener("change", function (event) {
         timerState.subjectId = event.target.value;
     }
 });
+
+// =====================================
+// Screen Wake Lock
+// =====================================
+
+let wakeLock = null;
+
+// منع الشاشة من الإغلاق
+async function preventScreenSleep() {
+    try {
+        if ("wakeLock" in navigator) {
+            wakeLock = await navigator.wakeLock.request("screen");
+            console.log("Screen Wake Lock Enabled");
+        }
+    } catch (error) {
+        console.log("Wake Lock Error:", error);
+    }
+}
+
+// السماح للشاشة بالإغلاق
+async function allowScreenSleep() {
+    if (wakeLock !== null) {
+        await wakeLock.release();
+        wakeLock = null;
+        console.log("Screen Wake Lock Disabled");
+    }
+}

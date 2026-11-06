@@ -53,19 +53,20 @@ function saveSubjects(subjects) {
 
 function updateDate() {
     const dateElement = document.getElementById("current-date");
+
+    if (!dateElement) return;
+
     const today = new Date();
 
-    if (dateElement) {
-        dateElement.textContent = today.toLocaleDateString("ar-EG", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        });
-    }
+    dateElement.textContent = today.toLocaleDateString("ar-EG", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
 }
 
-updateDate();
+document.addEventListener("DOMContentLoaded", updateDate);
 
 
 // =====================================
