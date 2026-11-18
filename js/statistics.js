@@ -5,7 +5,7 @@
 let statsDailyChart = null;
 let statsSubjectChart = null;
 
-const CHART_COLORS = ["#668b72", "#5486c2", "#e49a52", "#9676c8", "#c0504d", "#4bacc6", "#b5a642", "#8a8a8a"];
+const CHART_COLORS = ["#668b72", "#5486c2", "#e49a52", "#9676c8", "#c0504d", "#4bacc6", "#b5a642", "#8a8a8a" , "#f79646", "#9bbb59", "#8064a2", "#4bacc6", "#c0504d", "#92a9cf", "#e26b6b" , "#b5a642", "#4bacc6", "#9bbb59", "#8064a2", "#c0504d", "#92a9cf", "#e26b6b", "#f79646", "#8a8a8a"];
 
 function secondsOnDay(sessions, dateKey) {
     return sessions
