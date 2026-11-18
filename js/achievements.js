@@ -4,7 +4,17 @@
 // =====================================
 
 function achievementMetrics() {
-    const lessons = lessonTotals();
+    const lessons = typeof lessonTotals === "function"
+        ? lessonTotals()
+        : getSubjects().reduce((totals, subject) => {
+            (subject.units || []).forEach(unit => {
+                (unit.lessons || []).forEach(lesson => {
+                    totals.total++;
+                    if (lesson.completed) totals.done++;
+                });
+            });
+            return totals;
+        }, { total: 0, done: 0 });
     const exams = readList("exams");
     const revisions = readList("revisions");
 
@@ -16,7 +26,14 @@ function achievementMetrics() {
         hours: getTotalStudySeconds() / 3600,
         streak: studyStreak(),
         exams: exams.length,
-        bestScore: Math.max(0, ...exams.map(e => examPercent(e) || 0)),
+        bestScore: Math.max(0, ...exams.map(e => {
+            const percent = typeof examPercent === "function"
+                ? examPercent(e)
+                : (e.total > 0 && e.score !== null && e.score !== undefined
+                    ? Math.round(Number(e.score) / Number(e.total) * 100)
+                    : 0);
+            return percent || 0;
+        })),
         notes: readList("notes").length,
         reviews: revisions.reduce((sum, r) => sum + (r.history ? r.history.length : 0), 0)
     };

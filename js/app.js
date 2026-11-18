@@ -76,12 +76,12 @@ document.addEventListener("DOMContentLoaded", updateDate);
 const themeToggle = document.getElementById("theme-toggle");
 
 function updateThemeIcon() {
+    if (!themeToggle) return;
     const icon = themeToggle.querySelector("i");
-    const isDark = document.body.classList.contains("dark-mode");
+    if (!icon) return;
 
-    icon.className = isDark
-        ? "fa-solid fa-sun"
-        : "fa-solid fa-moon";
+    const isDark = document.body.classList.contains("dark-mode");
+    icon.className = isDark ? "fa-solid fa-sun" : "fa-solid fa-moon";
 }
 
 const savedTheme = localStorage.getItem("mirqah-theme");
@@ -92,18 +92,24 @@ if (savedTheme === "dark") {
 
 updateThemeIcon();
 
-themeToggle.addEventListener("click", function () {
-    document.body.classList.toggle("dark-mode");
+if (themeToggle) {
+    themeToggle.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
 
-    const isDark = document.body.classList.contains("dark-mode");
+        const isDark = document.body.classList.contains("dark-mode");
+        try {
+            localStorage.setItem("mirqah-theme", isDark ? "dark" : "light");
+        } catch (error) {
+            console.warn("تعذر حفظ المظهر:", error);
+        }
 
-    localStorage.setItem(
-        "mirqah-theme",
-        isDark ? "dark" : "light"
-    );
-
-    updateThemeIcon();
-});
+        updateThemeIcon();
+        setTimeout(() => {
+            if (typeof renderStudyChart === "function") renderStudyChart();
+            if (typeof renderStatisticsCharts === "function") renderStatisticsCharts();
+        }, 0);
+    });
+}
 
 
 // =====================================
@@ -154,14 +160,13 @@ function renderDashboardStats() {
     const tasks = getSection("tasks") || [];
     const remainingTasks = tasks.filter(task => !task.completed).length;
 
-    document.getElementById("total-subjects").textContent =
-        subjects.length;
+    const totalSubjectsEl = document.getElementById("total-subjects");
+    const completedLessonsEl = document.getElementById("completed-lessons");
+    const remainingTasksEl = document.getElementById("remaining-tasks");
 
-    document.getElementById("completed-lessons").textContent =
-        completedLessons;
-
-    document.getElementById("remaining-tasks").textContent =
-        remainingTasks;
+    if (totalSubjectsEl) totalSubjectsEl.textContent = subjects.length;
+    if (completedLessonsEl) completedLessonsEl.textContent = completedLessons;
+    if (remainingTasksEl) remainingTasksEl.textContent = remainingTasks;
 }
 
 

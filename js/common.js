@@ -34,6 +34,17 @@ function saveList(name, list) {
     return true;
 }
 
+
+// الوصول الآمن لحقول النماذج بالاسم (يتجنب تعارض أسماء الحقول مع خصائص form)
+function formField(form, name) {
+    return form && form.elements ? form.elements.namedItem(name) : null;
+}
+
+function formValue(form, name) {
+    const field = formField(form, name);
+    return field && "value" in field ? field.value : "";
+}
+
 function subjectOptions(selected, placeholder) {
     const subjects = getSubjects();
     const first = placeholder === undefined ? "بدون مادة" : placeholder;
@@ -52,9 +63,17 @@ function todayKey() {
     return localDateKey(new Date());
 }
 
+function isValidDateKey(dateStr) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(dateStr || ""))) return false;
+    const date = new Date(dateStr + "T00:00:00");
+    return !Number.isNaN(date.getTime()) && localDateKey(date) === dateStr;
+}
+
 function daysUntil(dateStr) {
+    if (!isValidDateKey(dateStr)) return NaN;
     const today = new Date(todayKey() + "T00:00:00");
     const target = new Date(dateStr + "T00:00:00");
+    if (Number.isNaN(target.getTime())) return NaN;
     return Math.round((target - today) / 86400000);
 }
 
@@ -79,6 +98,7 @@ function formatLongDate(dateStr) {
 
 function countdownText(dateStr) {
     const n = daysUntil(dateStr);
+    if (!Number.isFinite(n)) return "";
 
     if (n === 0) return "اليوم";
     if (n === 1) return "غداً";
@@ -140,12 +160,3 @@ function normalizeUrl(value) {
     }
 }
 
-// الدالة تعيد رسم كل شيء عند تغيّر المظهر
-document.getElementById("theme-toggle").addEventListener("click", function () {
-    setTimeout(function () {
-        if (typeof renderStatisticsCharts === "function" &&
-            window.currentPageName === "statistics") {
-            renderStatisticsCharts();
-        }
-    }, 0);
-});

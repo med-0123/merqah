@@ -39,7 +39,13 @@ function renderRevisionRow(item, due) {
 
 function renderRevisionsPage(container) {
     const target = container || pagesContainer;
-    const items = readList("revisions");
+    const items = readList("revisions").map(item => ({
+        ...item,
+        stage: Math.max(0, Math.min(Number(item.stage) || 0, REVIEW_INTERVALS.length - 1)),
+        history: Array.isArray(item.history) ? item.history : [],
+        done: Boolean(item.done),
+        nextDate: item.nextDate || todayKey()
+    }));
     const today = todayKey();
 
     const active = items.filter(i => !i.done);
@@ -159,13 +165,13 @@ pagesContainer.addEventListener("submit", function (event) {
     event.preventDefault();
 
     const form = event.target;
-    const title = form.title.value.trim();
+    const title = formValue(form, "title").trim();
 
     if (!title) return;
 
     const items = readList("revisions");
 
-    items.push(newRevision(title, form.subject.value));
+    items.push(newRevision(title, formValue(form, "subject")));
 
     if (saveList("revisions", items)) renderRevisionsPage(pagesContainer);
 });
@@ -175,7 +181,13 @@ document.addEventListener("click", function (event) {
 
     if (!button) return;
 
-    const items = readList("revisions");
+    const items = readList("revisions").map(item => ({
+        ...item,
+        stage: Math.max(0, Math.min(Number(item.stage) || 0, REVIEW_INTERVALS.length - 1)),
+        history: Array.isArray(item.history) ? item.history : [],
+        done: Boolean(item.done),
+        nextDate: item.nextDate || todayKey()
+    }));
     const action = button.dataset.rv;
 
     if (action === "add-lesson" || action === "add-all") {

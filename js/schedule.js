@@ -96,11 +96,11 @@ pagesContainer.addEventListener("submit", function (event) {
 
     items.push({
         id: createId(),
-        day: Number(form.day.value),
-        time: form.time.value,
-        duration: Number(form.duration.value) || 0,
-        subjectId: form.subject.value,
-        title: form.title.value.trim()
+        day: Number(formValue(form, "day")),
+        time: formValue(form, "time"),
+        duration: Number(formValue(form, "duration")) || 0,
+        subjectId: formValue(form, "subject"),
+        title: formValue(form, "title").trim()
     });
 
     if (saveList("schedule", items)) renderSchedulePage(pagesContainer);

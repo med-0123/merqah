@@ -102,9 +102,9 @@ pagesContainer.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const form = event.target;
-    const file = form.file.files[0];
-    const rawUrl = form.url.value.trim();
-    const title = form.title.value.trim();
+    const file = (formField(form, "file")?.files || [])[0];
+    const rawUrl = formValue(form, "url").trim();
+    const title = formValue(form, "title").trim();
 
     if (!file && !rawUrl) {
         alert("أضف رابطاً أو اختر ملفاً.");
@@ -135,7 +135,7 @@ pagesContainer.addEventListener("submit", async function (event) {
             url: dataUrl,
             fileName: file.name,
             size: file.size,
-            subjectId: form.subject.value,
+            subjectId: formValue(form, "subject"),
             createdAt: new Date().toISOString()
         });
     } else {
@@ -153,7 +153,7 @@ pagesContainer.addEventListener("submit", async function (event) {
             url,
             fileName: "",
             size: 0,
-            subjectId: form.subject.value,
+            subjectId: formValue(form, "subject"),
             createdAt: new Date().toISOString()
         });
     }

@@ -119,18 +119,18 @@ pagesContainer.addEventListener("submit", function (event) {
     event.preventDefault();
 
     const form = event.target;
-    const title = form.title.value.trim();
+    const title = formValue(form, "title").trim();
 
-    if (!title || !form.date.value) return;
+    if (!title || !formValue(form, "date")) return;
 
     const exams = readList("exams");
 
     exams.push({
         id: createId(),
         title,
-        subjectId: form.subject.value,
-        date: form.date.value,
-        time: form.time.value,
+        subjectId: formValue(form, "subject"),
+        date: formValue(form, "date"),
+        time: formValue(form, "time"),
         score: null,
         total: null
     });
@@ -171,7 +171,7 @@ document.addEventListener("click", function (event) {
 
             if (date === null) return;
 
-            if (!/^\d{4}-\d{2}-\d{2}$/.test(date.trim()) || isNaN(new Date(date.trim() + "T00:00:00"))) {
+            if (!isValidDateKey(date.trim())) {
                 alert("صيغة التاريخ غير صحيحة، مثال: 2026-12-20");
                 return;
             }

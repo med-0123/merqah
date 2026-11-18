@@ -149,7 +149,7 @@ pagesContainer.addEventListener("submit", function (event) {
     event.preventDefault();
 
     const form = event.target;
-    const title = form.title.value.trim();
+    const title = formValue(form, "title").trim();
 
     if (!title) return;
 
@@ -158,8 +158,8 @@ pagesContainer.addEventListener("submit", function (event) {
     tasks.push({
         id: createId(),
         title,
-        subjectId: form.subject.value,
-        dueDate: form.dueDate.value,
+        subjectId: formValue(form, "subject"),
+        dueDate: formValue(form, "dueDate"),
         completed: false,
         createdAt: new Date().toISOString()
     });

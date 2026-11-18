@@ -120,6 +120,8 @@ function timerTick() {
         timerState.accumulated = timerState.targetSeconds;
         timerState.startedAt = null;
 
+        allowScreenSleep();
+
         if (saveStudySession(timerState.targetSeconds)) {
             alert("أحسنت! انتهت جلسة المذاكرة وتم تسجيلها 🎉");
             timerState.accumulated = 0;
@@ -267,20 +269,48 @@ let wakeLock = null;
 // منع الشاشة من الإغلاق
 async function preventScreenSleep() {
     try {
-        if ("wakeLock" in navigator) {
-            wakeLock = await navigator.wakeLock.request("screen");
-            console.log("Screen Wake Lock Enabled");
-        }
+        if (!("wakeLock" in navigator)) return;
+        if (wakeLock && !wakeLock.released) return;
+
+        wakeLock = await navigator.wakeLock.request("screen");
+        wakeLock.addEventListener("release", () => {
+            wakeLock = null;
+        }, { once: true });
     } catch (error) {
-        console.log("Wake Lock Error:", error);
+        console.warn("Wake Lock غير متاح في هذا المتصفح أو السياق:", error);
+        wakeLock = null;
     }
 }
 
 // السماح للشاشة بالإغلاق
 async function allowScreenSleep() {
-    if (wakeLock !== null) {
-        await wakeLock.release();
-        wakeLock = null;
-        console.log("Screen Wake Lock Disabled");
+    if (!wakeLock) return;
+
+    const currentLock = wakeLock;
+    wakeLock = null;
+
+    try {
+        if (!currentLock.released) await currentLock.release();
+    } catch (error) {
+        console.warn("تعذر تحرير Wake Lock:", error);
     }
 }
+
+// يعيد طلب Wake Lock عند الرجوع للتبويب إذا كانت الجلسة لا تزال تعمل.
+document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible" && timerState.startedAt) {
+        preventScreenSleep();
+    } else if (document.visibilityState === "hidden" && !timerState.startedAt) {
+        allowScreenSleep();
+    }
+});
+
+// إيقاف المؤقت وتحرير Wake Lock عند مغادرة الصفحة أو إغلاقها.
+window.addEventListener("pagehide", function () {
+    if (timerState.startedAt) {
+        timerState.accumulated = timerElapsed();
+        timerState.startedAt = null;
+        stopTimerInterval();
+    }
+    allowScreenSleep();
+});

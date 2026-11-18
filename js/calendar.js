@@ -171,7 +171,7 @@ pagesContainer.addEventListener("submit", function (event) {
 
     event.preventDefault();
 
-    const title = event.target.title.value.trim();
+    const title = formValue(event.target, "title").trim();
 
     if (!title) return;
 

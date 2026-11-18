@@ -9,7 +9,7 @@ const notesState = {
 
 function renderNotesPage(container) {
     const target = container || pagesContainer;
-    const notes = readList("notes").sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+    const notes = readList("notes").sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")));
     const editingNote = notesState.editing && notesState.editing !== "new"
         ? notes.find(n => n.id === notesState.editing)
         : null;
@@ -72,7 +72,7 @@ function renderNotesPage(container) {
                                 ${subject ? `<span class="badge" style="width:fit-content">${escapeHTML(subject)}</span>` : ""}
                                 <p>${escapeHTML(note.content)}</p>
                                 <div class="note-foot">
-                                    <small>${new Date(note.updatedAt).toLocaleDateString("ar-EG", { day: "numeric", month: "long" })}</small>
+                                    <small>${new Date(note.updatedAt || Date.now()).toLocaleDateString("ar-EG", { day: "numeric", month: "long" })}</small>
                                     <div class="row-actions">
                                         <button class="icon-action" title="تعديل" data-nt="edit" data-id="${note.id}">
                                             <i class="fa-solid fa-pen"></i>
@@ -99,7 +99,7 @@ pagesContainer.addEventListener("submit", function (event) {
     event.preventDefault();
 
     const form = event.target;
-    const title = form.title.value.trim();
+    const title = formValue(form, "title").trim();
 
     if (!title) return;
 
@@ -111,15 +111,15 @@ pagesContainer.addEventListener("submit", function (event) {
 
     if (existing) {
         existing.title = title;
-        existing.content = form.content.value;
-        existing.subjectId = form.subject.value;
+        existing.content = formValue(form, "content");
+        existing.subjectId = formValue(form, "subject");
         existing.updatedAt = now;
     } else {
         notes.push({
             id: createId(),
             title,
-            content: form.content.value,
-            subjectId: form.subject.value,
+            content: formValue(form, "content"),
+            subjectId: formValue(form, "subject"),
             updatedAt: now
         });
     }

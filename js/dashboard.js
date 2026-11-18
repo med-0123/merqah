@@ -197,9 +197,4 @@ renderDashboardStats = function () {
     renderDashboardExtras();
 };
 
-// تحديث المظهر يعيد رسم المخطط بألوان المظهر الجديد
-document.getElementById("theme-toggle").addEventListener("click", function () {
-    setTimeout(renderStudyChart, 0);
-});
-
 renderDashboardStats();
